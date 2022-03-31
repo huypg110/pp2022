@@ -1,60 +1,62 @@
 from datetime import datetime
+import copy
+
 
 class StudentMark():
     class Student():
+        students = []
+
         def studentCount(student):
             student.count = int (input ("Enter number of students: "))
             return student.count
 
         def studentDetail(student):
-            student.sID = input ("Student id: ")
-            student.sName = input ("Student name: ")
-            student.sDOB = input("Student's DOB:")
-            student.setDOB=datetime.strptime(student.sDOB, "%d/%m/%Y")
-            return student.sID, student.sName, student.setDOB
+            for s in range(student.count):
+                print(f"### Student {s+1} entry ###")
+                student.sID = input ("Student id: ")
+                student.sName = input ("Student name: ")
+                student.sDOB = input("Student's DOB: ")
+                student.setDOB=datetime.strptime(student.sDOB, "%d/%m/%Y")
+                student.students.append(copy.copy(student))
             
         def studentList(student):
-            sList = []
-            for i in range(student.count):
-                sList.append ((student.sID, student.sName, student.setDOB))
-                sList.sort()       
-            for s in sList:
-                print (f"Student id: {s[0]} Name: {s[1]} Date of birth: {s[2]}")      
+            for s in student.students:
+                print (f"Student id: {s.sID} Name: {s.sName} Date of birth: {s.sDOB}")     
             
     class Course():
+        courses = []
+
         def courseCount(course):
             course.count = int (input ("Enter number of courses: "))
             return course.count
 
         def courseDetail(course):
-            course.cID = input ("Course id: ")
-            course.cName = input ("Course name: ")
-            return course.cID, course.cName
+            for c in range(course.count):
+                print(f"### Course {c+1} entry ###")
+                course.cID = input ("Course id: ")
+                course.cName = input ("Course name: ")
+                course.courses.append(copy.copy(course))
             
         def courseList(course):
-            cList = []
-            for i in range(course.count):
-                cList.append ((course.cID, course.cName))
-                cList.sort()       
-            for c in cList:
-                print (f"Course id: {c[0]} Name: {c[1]}")                
-
-    class StudentMarkList(Student,Course):             
+            for c in course.courses:
+                print (f"Course id: {c.cID} Name: {c.cName} ")     
+                
+    class StudentMarkList(Student,Course):   
+        smList = []
         def studentMarkCount(m):
             m.count = int (input ("How many student marks/courses do you want to enter? "))
             return m.count
-                    
-        def markList(m):
-            m.courseDetail()
-            m.studentDetail()
-            
-            mark = float(input("Enter marks: "))
-            smList = []
+
+        def studentMarkDetail(m):
             for i in range(m.count):
-                smList.append((m.sName,mark))
-                smList.sort()
-            for l in smList:
-                print(f"Student {l[0]} got {l[1]} points")
+                m.sName = input ("Student name: ")
+                m.cID = input ("Course id: ")
+                m.mark = float(input("Enter marks: "))
+                m.smList.append((copy.copy(m)))
+
+        def markList(m):
+            for l in m.smList:
+                print(f"Student {l.sName} got {l.mark} points")
                
 
     
@@ -70,6 +72,7 @@ class StudentMark():
     
     sm = StudentMarkList()
     sm.studentMarkCount()
+    sm.studentMarkDetail()
     sm.markList()
     
         
